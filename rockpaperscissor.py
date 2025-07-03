@@ -1,40 +1,42 @@
 import random
 
-def rockpaperscissor():
-    choices = ["rock", "paper", "scissors"]
-    print("Welcome to the Rock, Paper, Scissors Game!")
+score = {"wins": 0, "losses": 0, "ties": 0}
 
+def get_computer_move():
+    return random.choice(['rock', 'paper', 'scissors'])
+
+def get_result(player, computer):
+    if player == computer:
+        return 'Tie'
+    elif (player == 'rock' and computer == 'scissors') or \
+         (player == 'paper' and computer == 'rock') or \
+         (player == 'scissors' and computer == 'paper'):
+        return 'You win'
+    else:
+        return 'You lose'
+
+def play_game():
     while True:
-        user_choice = input("\nType your choice (rock, paper, or scissors): ").lower()
-
-        if user_choice not in choices:
-            print("Invalid choice. Please try again.")
-            continue  
-
-        computer_choice = random.choice(choices)
-
-        print(f"\nYou chose: {user_choice}")
-        print(f"Computer chose: {computer_choice}")
-
-        if user_choice == computer_choice:
-            print("It's a tie!")
-        elif (user_choice == "rock" and computer_choice == "scissors") or \
-             (user_choice == "paper" and computer_choice == "rock") or \
-             (user_choice == "scissors" and computer_choice == "paper"):
-            print("You win!")
-        else:
-            print("Computer wins! Better luck next time.")
-
-        play_again = input("\nDo you want to play again? (yes or no): ").lower()
-
-        if play_again in ["yes", "y"]:
-            print("Let's play again!")
+        player_move = input("Enter your move (rock/paper/scissors) or 'quit': ").lower()
+        if player_move == 'quit':
+            break
+        if player_move not in ['rock', 'paper', 'scissors']:
+            print("Invalid input. Try again.")
             continue
-        elif play_again in ["no", "n"]:
-            print("Thanks for playing! See you next time.")
-            break
-        else:
-            print("Invalid input. Exiting the game.")
-            break
 
-rockpaperscissor()
+        computer_move = get_computer_move()
+        print(f"Computer chose: {computer_move}")
+
+        result = get_result(player_move, computer_move)
+        print(result)
+
+        if result == 'You win':
+            score['wins'] += 1
+        elif result == 'You lose':
+            score['losses'] += 1
+        else:
+            score['ties'] += 1
+
+        print("Score:", score)
+
+play_game()
